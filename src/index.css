@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;   /* Remove default browser margins */
+  padding: 0;  /* Remove default browser padding */
+  width: 100%;
+  box-sizing: border-box;
+}
