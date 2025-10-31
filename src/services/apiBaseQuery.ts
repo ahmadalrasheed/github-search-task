@@ -1,7 +1,5 @@
-// src/services/apiBaseQuery.ts
 import { BaseQueryFn } from "@reduxjs/toolkit/query";
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
-import type { RootState } from "@/store";
 
 export const axiosBaseQuery =
   ({
@@ -18,10 +16,8 @@ export const axiosBaseQuery =
     unknown,
     unknown
   > =>
-  async (args, api) => {
+  async (args) => {
     const { url, method, data, params } = args;
-    const { getState } = api;
-    const token = (getState() as RootState).auth.token;
 
     try {
       const result = await axios({
@@ -30,26 +26,20 @@ export const axiosBaseQuery =
         method,
         data,
         params,
-        headers: token ? { Authorization: `Bearer ${token}` } : {},
+        headers: {
+          'Accept': 'application/vnd.github.v3+json',
+          'User-Agent': 'GitHub-Search-App',
+        },
       });
+      
       return { data: result.data };
     } catch (error) {
       const err = error as AxiosError;
-      // Detect 401
-      if (err.response?.status === 401) {
-        window.location.href = "/";
-        return {
-          error: {
-            status: 401,
-            data: "Unauthorized - user is being redirected to /",
-          },
-        };
-      }
-
+      
       return {
         error: {
-          status: err.response?.status,
-          data: err.response?.data || err.message,
+          status: err.response?.status || 500,
+          data: err.response?.data || err.message || 'An error occurred',
         },
       };
     }

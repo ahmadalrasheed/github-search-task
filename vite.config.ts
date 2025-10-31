@@ -10,7 +10,8 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
       '@components': path.resolve(__dirname, './src/components'),
       '@utils': path.resolve(__dirname, './src/utils'),
-      // Add more as needed...
+      '@constants': path.resolve(__dirname, './src/constants'),
+      '@test': path.resolve(__dirname, './src/test'),
     },
   },
   server: {
